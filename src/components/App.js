@@ -1,23 +1,34 @@
 import React, { useState } from "react";
+import Header from "./Header";
 import ShoppingList from "./ShoppingList";
-import itemData from "../data/items";
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [category, setCategory] = useState("All");
 
-  function onDarkModeClick() {
-    setIsDarkMode((isDarkMode) => !isDarkMode);
-  }
+  const items = [
+    { id: 1, name: "Yogurt", category: "Dairy" },
+    { id: 2, name: "Pomegranate", category: "Produce" },
+    { id: 3, name: "Lettuce", category: "Produce" },
+    { id: 4, name: "String Cheese", category: "Dairy" },
+    { id: 5, name: "Cookies", category: "Dessert" },
+  ];
+
+  const filteredItems =
+    category === "All" ? items : items.filter((item) => item.category === category);
+
+  const handleDarkModeClick = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const handleCategoryChange = (newCategory) => {
+    setCategory(newCategory);
+  };
 
   return (
-    <div className={"App " + (isDarkMode ? "dark" : "light")}>
-      <header>
-        <h2>Shopster</h2>
-        <button onClick={onDarkModeClick}>
-          {isDarkMode ? "Dark" : "Light"} Mode
-        </button>
-      </header>
-      <ShoppingList items={itemData} />
+    <div className={darkMode ? "dark" : "light"}>
+      <Header onDarkModeClick={handleDarkModeClick} />
+      <ShoppingList items={filteredItems} onCategoryChange={handleCategoryChange} />
     </div>
   );
 }
